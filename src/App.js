@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState} from 'react'
+import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const Event = {
+  name: "", 
+  capacity: 0
 }
 
-export default App;
+function EventList({eventList}) {
+  if(eventList.length === 0) return <p className="no-events">No events</p>
+  
+  return (
+      <ul className="eventlist">  
+        {eventList.map(event => 
+          <span className="events" key={event.name}>
+            {event.name}
+          </span>
+        )}
+      </ul>
+  )
+}
+
+function App() {
+  const [eventList, setEventList] = useState([])
+  
+  return (
+    <div>
+      <h1>Events</h1>
+      <EventList eventList={eventList}/>
+    </div>
+  )
+}
+
+export default App
