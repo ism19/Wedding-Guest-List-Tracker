@@ -8,7 +8,12 @@ function EventList({eventList}) {
       <ul className="event-list">  
         {eventList.map(event => 
           <li className="events" key={event.name}>
-            {event.name} - {event.capacity} spots total • {event.capacity - event.guests.length} spots remaining
+            <div className="event-name">
+              {event.name}
+            </div>
+            <div className="event-capacity">
+              {event.capacity} spots total • {event.capacity - event.guests.length} spots remaining
+            </div>
           </li>
         )}
       </ul>
