@@ -36,34 +36,43 @@ function App() {
   }
 
   return (
-    <div>
-      <h3 id="my-events">My Events</h3>
-      <div className="add-event">
-        <input
-          type="text"
-          className="add-event-input"
-          value={event}
-          placeholder="Event name"
-          onChange={e => setEvent(e.target.value)}
-        />
+    <div className="app">
+      <div className="layout">
+        <div className="left">
+          <h3 id="my-events">My Events</h3>
 
-        <input
-          type="text"
-          className="add-event-input"
-          value={capacity}
-          placeholder="Max capacity"
-          onChange={e => setCapacity(e.target.value)}
-        />
+          <div className="add-event">
+            <input
+              type="text"
+              className="add-event-input"
+              value={event}
+              placeholder="Event name"
+              onChange={e => setEvent(e.target.value)}
+            />
 
-        <button className="add-button" onClick={addEvent}>
-          Add Event
-        </button>
+            <input
+              type="text"
+              className="add-event-input"
+              value={capacity}
+              placeholder="Max capacity"
+              onChange={e => setCapacity(e.target.value)}
+            />
+
+            <button className="add-button" onClick={addEvent}>
+              Add Event
+            </button>
+          </div>
+          
+          <div className="events-grid">
+            <EventList eventList={eventList}/>
+          </div>
+
+        </div>
+        
+        <div className="right">
+
+        </div>
       </div>
-      
-      <div className="events-grid">
-        <EventList eventList={eventList}/>
-      </div>
-
     </div>
   )
 }
