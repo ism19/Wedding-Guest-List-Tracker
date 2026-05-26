@@ -43,9 +43,8 @@ function App() {
 
   return (
     <div>
-      <div className="create-event">
-        <h3>Create New Event</h3>
-
+      <h3>My Events</h3>
+      <div className="add-event">
         <input
           type="text"
           value={event}
