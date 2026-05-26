@@ -1,12 +1,6 @@
 import {useState} from 'react'
 import './App.css'
 
-const Event = {
-  name: "", 
-  capacity: 0,
-  guests: []
-}
-
 function EventList({eventList}) {
   if(eventList.length === 0) return <p className="no-events">No events</p>
   
@@ -43,10 +37,11 @@ function App() {
 
   return (
     <div>
-      <h3>My Events</h3>
+      <h3 id="my-events">My Events</h3>
       <div className="add-event">
         <input
           type="text"
+          className="add-event-input"
           value={event}
           placeholder="Event name"
           onChange={e => setEvent(e.target.value)}
@@ -54,6 +49,7 @@ function App() {
 
         <input
           type="text"
+          className="add-event-input"
           value={capacity}
           placeholder="Max capacity"
           onChange={e => setCapacity(e.target.value)}
