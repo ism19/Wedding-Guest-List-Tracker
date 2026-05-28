@@ -1,13 +1,13 @@
 import {useState} from 'react'
 import './App.css'
 
-function EventList({eventList}) {
+function EventList({eventList, selected, setSelected}) {
   if(eventList.length === 0) return <p className="no-events">No events</p>
   
   return (
       <ul className="event-list">  
         {eventList.map(event => 
-          <li className="events" key={event.name}>
+          <li className={(event.name === selected?.name) ? "events-selected" : "events"} key={event.name} onClick={() => setSelected(event)}>
             <div className="event-name">
               {event.name}
             </div>
@@ -24,6 +24,7 @@ function App() {
   const [eventList, setEventList] = useState([])
   const [capacity, setCapacity] = useState("")
   const [event, setEvent] = useState("")
+  const [selected, setSelected] = useState(null) 
 
   function addEvent() {
     if(event.trim().length === 0) return
@@ -69,7 +70,7 @@ function App() {
           </div>
           
           <div className="events-grid">
-            <EventList eventList={eventList}/>
+            <EventList eventList={eventList} selected={selected} setSelected={setSelected}/>
           </div>
 
         </div>
