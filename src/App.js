@@ -12,7 +12,7 @@ function EventList({eventList, selected, setSelected}) {
               {event.name}
             </div>
             <div className="event-capacity">
-              {event.capacity} spots total • {event.capacity - event.guests.length} spots remaining
+              {event.capacity} spots total • {event.capacity - event.guests.reduce((total, guest) => total + guest.partySize, 0)} spots remaining
             </div>
           </li>
         )}
@@ -25,10 +25,12 @@ function GuestList({selected, selectedGuest, setSelectedGuest}) {
 
   return (
     <div className="event-details">
-      <h2>{selected.name}</h2>
-      <p>{selected.capacity} spots total</p>
-      <p>{selected.capacity - selected.guests.length} spots remaining</p>
-      <ul className="guest-list">
+      <div className="event-text">
+        <h2>{selected.name}</h2>
+        <p>{selected.capacity} spots total</p>
+        <p>{selected.capacity - selected.guests.reduce((total, guest) => total + guest.partySize, 0)} spots remaining</p>
+      </div>
+        <ul className="guest-list">
         {selected.guests.map(guest => (
           <li className="guest" key={guest.name}>
             {guest.name} • party of {guest.partySize}
@@ -38,6 +40,13 @@ function GuestList({selected, selectedGuest, setSelectedGuest}) {
       </ul>
     </div>
   )      
+}
+
+function capitalize(str) {
+  return str
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))  
+    .join(" ")
 }
 
 function App() {
@@ -50,7 +59,7 @@ function App() {
   const [partySize, setPartySize] = useState("")
 
   function addEvent() {
-    if(event.trim().length === 0) return
+    if(event.trim().length === 0 || isNaN(capacity) || capacity.trim().length === 0) return
 
     const newEvent = {
       name: event,
@@ -65,7 +74,7 @@ function App() {
   }
 
   function addGuest() {
-    if (guestName.trim().length === 0) return
+    if (guestName.trim().length === 0 || isNaN(partySize) || partySize.trim().length === 0) return
 
     const newGuest = {
       name: guestName,
@@ -98,7 +107,7 @@ function App() {
               className="add-event-input"
               value={event}
               placeholder="Event name"
-              onChange={e => setEvent(e.target.value)}
+              onChange={e => setEvent(capitalize(e.target.value))}
             />
 
             <input
@@ -127,14 +136,14 @@ function App() {
                 type="text" 
                 className="guest-name-input"
                 value={guestName} 
-                placeholder="name"
-                onChange={e => setGuestName(e.target.value)}
+                placeholder="Name"
+                onChange={e => setGuestName(capitalize(e.target.value))}
               />
               <input
                 type="text"
                 className="party-size-input"
                 value={partySize}
-                placeholder="party size"
+                placeholder="Party size"
                 onChange={e => setPartySize(e.target.value)}
               />
               <button className="add-guest-button" onClick={addGuest}>
@@ -143,12 +152,12 @@ function App() {
             </div>
             )
           }
-          
           <GuestList 
             selected={selected} 
             selectedGuest={selectedGuest} 
             setSelectedGuest={setSelectedGuest}
           />
+          
         </div>
       </div>
     </div>
