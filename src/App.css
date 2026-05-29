@@ -11,6 +11,10 @@ body {
   padding: 40px 24px;
 }
 
+.layout {
+  display: flex;
+}
+
 #my-events {
   font-size: 36px;
   color: #313d52;
@@ -50,7 +54,7 @@ body {
   background: white;
 }
 
-.add-button {
+.add-event-button {
   background-color: #667eac;
   border: none;
   border-radius: 8px;
@@ -63,7 +67,7 @@ body {
   transition: background 0.15s;
 }
 
-.add-button:hover {
+.add-event-button:hover {
   background-color: #4f6490;
 }
 
@@ -119,3 +123,5 @@ body {
   font-size: 15px;
   padding: 20px 0;
 }
+
+/* –– EVENT PANEL ––*/
