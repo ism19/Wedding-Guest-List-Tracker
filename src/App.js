@@ -65,12 +65,22 @@ function App() {
   }
 
   function addGuest() {
+    if (guestName.trim().length === 0) return
+
     const newGuest = {
       name: guestName,
-      party: Number(partySize)
+      partySize: Number(partySize)
     }
 
-    selected.guests.push(newGuest)
+    const updatedList = eventList.map(event => {
+      if(event.name === selected.name) {
+        return {...event, guests: [...event.guests, newGuest]}
+      }
+      return event
+    })
+
+    setEventList(updatedList)
+    setSelected({...selected, guests: [...selected.guests, newGuest]})
 
     setGuestName("")
     setPartySize("")
