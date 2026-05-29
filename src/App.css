@@ -126,6 +126,13 @@ body {
 }
 
 /* –– EVENT PANEL ––*/
+.selected-info {
+  margin-top: 75px;
+  gap: 30px;
+  display: flex;
+  align-items: center;
+}
+
 .event-text {
   display: flex;
   align-items: baseline;

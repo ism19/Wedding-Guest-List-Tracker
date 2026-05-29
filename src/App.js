@@ -25,11 +25,6 @@ function GuestList({selected, selectedGuest, setSelectedGuest}) {
 
   return (
     <div className="event-details">
-      <div className="event-text">
-        <h2>{selected.name}</h2>
-        <p>{selected.capacity} spots total</p>
-        <p>{selected.capacity - selected.guests.reduce((total, guest) => total + guest.partySize, 0)} spots remaining</p>
-      </div>
         <ul className="guest-list">
         {selected.guests.map(guest => (
           <li className="guest" key={guest.name}>
@@ -131,24 +126,31 @@ function App() {
         
         <div className="right">
           {selected && (
-            <div className="add-guest">
-              <input 
-                type="text" 
-                className="guest-name-input"
-                value={guestName} 
-                placeholder="Name"
-                onChange={e => setGuestName(capitalize(e.target.value))}
-              />
-              <input
-                type="text"
-                className="party-size-input"
-                value={partySize}
-                placeholder="Party size"
-                onChange={e => setPartySize(e.target.value)}
-              />
-              <button className="add-guest-button" onClick={addGuest}>
-                Add Guest
-              </button>
+            <div className="selected-info">
+              <div className="event-text">
+                <h2>{selected.name}</h2>
+                <p>{selected.capacity} spots total</p>
+                <p>{selected.capacity - selected.guests.reduce((total, guest) => total + guest.partySize, 0)} spots remaining</p>
+              </div>
+              <div className="add-guest">
+                <input 
+                  type="text" 
+                  className="guest-name-input"
+                  value={guestName} 
+                  placeholder="Name"
+                  onChange={e => setGuestName(capitalize(e.target.value))}
+                />
+                <input
+                  type="text"
+                  className="party-size-input"
+                  value={partySize}
+                  placeholder="Party size"
+                  onChange={e => setPartySize(e.target.value)}
+                />
+                <button className="add-guest-button" onClick={addGuest}>
+                  Add Guest
+                </button>
+              </div>
             </div>
             )
           }
