@@ -1,20 +1,50 @@
 import {useState} from 'react'
 import './App.css'
 
-function EventList({eventList, selected, setSelected}) {
+function EventList({eventList, selected, setSelected, editingEvent, setEditingEvent, editEvent, setEditEvent, editCapacity, setEditCapacity, saveEvent}) {
   if(eventList.length === 0) return <p className="no-events">No events</p>
   
   return (
       <ul className="event-list">  
-        {eventList.map(event => 
-          <li className={(event.name === selected?.name) ? "events-selected" : "events"} key={event.name} onClick={() => setSelected(event)}>
-            <div className="event-name">
-              {event.name}
+        {eventList.map(event => editingEvent?.name === event.name ? (
+          <li className={selected?.name === event.name ? "events-selected" : "events"} key = {event.name} onClick={() => setSelected(event)}>
+            <div className="edit-fields">
+              <input
+                type="text"
+                value={editEvent}
+                placeholder="New name"
+                onChange={e => setEditEvent(capitalize(e.target.value))}
+              />
+              <input
+                type="text"
+                value={editCapacity}
+                placeholder="New capacity"
+                onChange={e => setEditCapacity(e.target.value)}
+              />
             </div>
-            <div className="event-capacity">
-              {event.capacity} spots total • {event.capacity - event.guests.reduce((total, guest) => total + guest.partySize, 0)} spots remaining
+            <div className="edit-actions">
+              <button className="add-event-button" onClick={saveEvent}>Save</button>
+              <button className="cancel-button" onClick={() => setEditingEvent(null)}>Cancel</button>
             </div>
           </li>
+        ) : (
+          <li className={(event.name === selected?.name) ? "events-selected" : "events"} key={event.name} onClick={() => setSelected(event)}>
+            <div className="event-info">
+              <div className="event-name">
+                {event.name}
+              </div>
+              <div className="event-capacity">
+                {event.capacity} spots total • {event.capacity - event.guests.reduce((total, guest) => total + guest.partySize, 0)} spots remaining
+              </div>
+            </div>
+            <button className="edit-button" onClick={e => {
+              e.stopPropagation()
+              setEditingEvent(event)
+              setEditEvent(event.name)
+              setEditCapacity(event.capacity)
+            }}>⋮</button>
+          </li>
+        )
         )}
       </ul>
   )
@@ -52,6 +82,9 @@ function App() {
   const [selectedGuest, setSelectedGuest] = useState(null)
   const [guestName, setGuestName] = useState("")
   const [partySize, setPartySize] = useState("")
+  const [editingEvent, setEditingEvent] = useState(null)
+  const [editEvent, setEditEvent] = useState("")
+  const [editCapacity, setEditCapacity] = useState("")
 
   function addEvent() {
     if(event.trim().length === 0 || isNaN(capacity) || capacity.trim().length === 0) return
@@ -66,6 +99,29 @@ function App() {
     
     setEvent("")
     setCapacity("")
+  }
+
+  function saveEvent() {
+    if(editEvent.trim().length === 0 || isNaN(editCapacity) || editCapacity.trim().length === 0) return
+
+    const editedEvent = {
+      name: editEvent,
+      capacity: Number(editCapacity),
+      guests: editingEvent.guests
+    }
+
+    const updatedList = eventList.map(event => {
+      if(event.name === editingEvent.name) {
+        return {...event, name: editEvent, capacity: editCapacity}
+      }
+      return event
+    })
+
+    setEventList(updatedList)
+    setSelected({...selected, name: editEvent, capacity: editCapacity})
+
+    setEditEvent("")
+    setEditCapacity("")
   }
 
   function addGuest() {
@@ -119,7 +175,17 @@ function App() {
           </div>
           
           <div className="events-grid">
-            <EventList eventList={eventList} selected={selected} setSelected={setSelected}/>
+            <EventList 
+              eventList={eventList} 
+              selected={selected} 
+              setSelected={setSelected}
+              editingEvent={editingEvent}
+              setEditingEvent={setEditingEvent}
+              editEvent={editEvent}
+              setEditEvent={setEditEvent}
+              editCapacity={editCapacity}
+              setEditCapacity={setEditCapacity}
+            />
           </div>
 
         </div>
